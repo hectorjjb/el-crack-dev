@@ -1,49 +1,238 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>El Crack</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-snap-type: y mandatory; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      font-family: 'Inter', sans-serif;
       background-color: #0d1117;
       color: #e6edf3;
+      overflow-x: hidden;
+    }
+
+    /* ── Hero Section ── */
+    .hero {
+      height: 100vh;
+      scroll-snap-align: start;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
+      position: relative;
     }
 
-    .container {
-      text-align: center;
-      padding: 2rem;
+    .hero h1 {
+      font-size: clamp(3rem, 8vw, 6rem);
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #58a6ff, #3fb950, #58a6ff);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientShift 4s ease infinite;
     }
 
-    h1 {
-      font-size: 3.5rem;
-      font-weight: 700;
-      letter-spacing: 0.05em;
-      margin-bottom: 0.5rem;
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
     }
 
-    p {
-      font-size: 1.1rem;
+    .hero .subtitle {
+      font-family: 'Fira Code', monospace;
+      font-size: 1.5rem;
       color: #8b949e;
       margin-top: 1rem;
+    }
+
+    .hero .subtitle .cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1.2em;
+      background: #58a6ff;
+      margin-left: 4px;
+      vertical-align: text-bottom;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink { 50% { opacity: 0; } }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 2rem;
+      animation: bounce 2s infinite;
+      color: #58a6ff;
+      font-size: 3rem;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(10px); }
+    }
+
+    /* ── Slide Sections ── */
+    .slide {
+      height: 100vh;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem;
+      position: relative;
+    }
+
+    .slide-image {
+      width: 90%;
+      max-width: 600px;
+      max-height: 55vh;
+      object-fit: contain;
+      border-radius: 12px;
+      border: 2px solid #30363d;
+      opacity: 0;
+      transform: scale(0.9);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .slide-image.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .slide-caption {
+      font-family: 'Fira Code', monospace;
+      font-size: clamp(0.95rem, 2.5vw, 1.3rem);
+      color: #e6edf3;
+      text-align: center;
+      max-width: 650px;
+      margin-top: 2rem;
+      line-height: 1.6;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease 0.3s, transform 0.8s ease 0.3s;
+    }
+
+    .slide-caption.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Slide number indicator */
+    .slide-number {
+      position: absolute;
+      top: 2rem;
+      right: 2rem;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.8rem;
+      color: #484f58;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      height: 100vh;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      font-family: 'Fira Code', monospace;
+      color: #484f58;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+    }
+
+    .footer.visible { opacity: 1; }
+
+    .footer h2 {
+      font-size: 3rem;
+      color: #e6edf3;
+      margin-bottom: 1rem;
+    }
+
+    .footer p {
+      font-size: 1.2rem;
     }
   </style>
 </head>
 <body>
-  <div class="container">
+
+  <!-- Hero -->
+  <section class="hero">
     <h1>El Crack</h1>
-    <p>Coming soon</p>
-  </div>
+    <p class="subtitle">
+      <span id="typed"></span><span class="cursor"></span>
+    </p>
+    <div class="scroll-hint">&#8595;</div>
+  </section>
+
+  <!-- Slide 1 -->
+  <section class="slide">
+    <div class="slide-number">01 / 04</div>
+    <img class="slide-image fade-in" src="images/programming_2_laptops.png" alt="Programando con 2 laptops">
+    <p class="slide-caption fade-in">Es tan rápido que apenas 2 computadoras pueden comparar su velocidad</p>
+  </section>
+
+  <!-- Slide 2 -->
+  <section class="slide">
+    <div class="slide-number">02 / 04</div>
+    <img class="slide-image fade-in" src="images/hike_2_bags.jpeg" alt="De hike con 2 mochilas">
+    <p class="slide-caption fade-in">Cuando va de hike, carga 2 mochilas porque una es muy fácil para él</p>
+  </section>
+
+  <!-- Slide 3 -->
+  <section class="slide">
+    <div class="slide-number">03 / 04</div>
+    <img class="slide-image fade-in" src="images/programing_car.png" alt="Programando en un Uber">
+    <p class="slide-caption fade-in">En un Uber al aeropuerto termina lo que un ingeniero hace en 2 días</p>
+  </section>
+
+  <!-- Slide 4 -->
+  <section class="slide">
+    <div class="slide-number">04 / 04</div>
+    <img class="slide-image fade-in" src="images/programming_dinner.png" alt="Programando durante la cena">
+    <p class="slide-caption fade-in">Una vez dejó de programar durante la cena y el stock de Microsoft se vino abajo</p>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer fade-in">
+    <h2>&lt;/El Crack&gt;</h2>
+    <p>// Como él, no hay nadie igual</p>
+  </footer>
+
+  <script>
+    // ── Typing effect ──
+    const text = "// La persona más crack";
+    const typedEl = document.getElementById("typed");
+    let i = 0;
+    function type() {
+      if (i < text.length) {
+        typedEl.textContent += text.charAt(i);
+        i++;
+        setTimeout(type, 80);
+      }
+    }
+    setTimeout(type, 800);
+
+    // ── Scroll fade-in ──
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+        }
+      });
+    }, { threshold: 0.2 });
+
+    document.querySelectorAll(".fade-in").forEach((el) => observer.observe(el));
+  </script>
+
 </body>
 </html>
